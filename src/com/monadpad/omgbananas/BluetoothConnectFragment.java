@@ -104,44 +104,9 @@ public class BluetoothConnectFragment extends OMGFragment {
                             mChannel.getOctave() + ";");
                 }
 
-                connection.setDataCallback(new BluetoothDataCallback() {
+                //used to setup the data callback here, now it's channel independent
 
-                    @Override
-                    public void newData(String name, String value) {
-
-                        if (name.equals("CHANNEL_PLAY_NOTE")) {
-                            Note note = new Note();
-                            String[] noteInfo = value.split(",");
-                            int basicNoteNumber = Integer.parseInt(noteInfo[0]);
-                            int instrumentNoteNumber = Integer.parseInt(noteInfo[1]);
-
-                            note.setInstrumentNote(instrumentNoteNumber);
-                            note.setBasicNote(basicNoteNumber);
-                            if (instrumentNoteNumber == -1) {
-                                note.setRest(true);
-                            }
-
-                            Log.d("MGH connection call back play note basic=", Integer.toString(basicNoteNumber));
-
-                            mChannel.playLiveNote(note);
-                        }
-
-                        if (name.equals("CHANNEL_SET_PATTERN")) {
-
-                            String[] params = value.split(",");
-                            int track = Integer.parseInt(params[0]);
-                            int subbeat = Integer.parseInt(params[1]);
-                            boolean patternValue = params[2].equals("true");
-
-                            ((DrumChannel)mChannel).setPattern(track, subbeat, patternValue);
-                        }
-
-                    }
-
-                });
-
-
-                getActivity().getSupportFragmentManager().popBackStack();
+                getActivity().getFragmentManager().popBackStack();
 
 
             }
@@ -158,25 +123,22 @@ public class BluetoothConnectFragment extends OMGFragment {
             @Override
             public void newStatus(final String status) {
 
-                activity.runOnUiThread(new Runnable() {
+                /*activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         //logView.append("\n");
                         //logView.append(status);
-                        Log.d("MGH bluetooth connect callback", status);
+                        Log.d("MGH bt connect callback", status);
                     }
-                });
+                });*/
 
             }
 
 
             @Override
             public void onConnected(final BluetoothConnection connection) {
-                // we have a winner
-                connection.writeString("JAM_SET_KEY=" + mJam.getKey() + ";");
-                connection.writeString("JAM_SET_SCALE=" + mJam.getScaleIndex() + ";");
-                connection.writeString("JAM_SET_BPM=" + mJam.getBPM() + ";");
 
+                setupDatacallBackForConnection(connection);
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -188,6 +150,10 @@ public class BluetoothConnectFragment extends OMGFragment {
             }
         });
 
+    }
+
+    public void setupDatacallBackForConnection(BluetoothConnection connection) {
+        connection.setDataCallback(new CommandProcessor(connection, mJam));
     }
 
     public String getPatternString() {

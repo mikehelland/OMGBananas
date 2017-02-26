@@ -2,12 +2,14 @@ package com.monadpad.omgbananas;
 
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+//import android.support.v4.app.FragmentActivity;
+//import android.support.v4.app.FragmentTransaction;
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class Main extends FragmentActivity {
+public class Main extends Activity {//FragmentActivity {
 
     Jam mJam;
     OMGSoundPool mPool = new OMGSoundPool(8, AudioManager.STREAM_MUSIC, 0);
@@ -37,7 +39,7 @@ public class Main extends FragmentActivity {
             mWelcomeFragment = new WelcomeFragment();
         }
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.add(R.id.main_layout, mWelcomeFragment);
         ft.commit();
 
@@ -55,6 +57,7 @@ public class Main extends FragmentActivity {
         if (!mPool.isLoaded())
             mPool.cancelLoading();
         mJam.finish();
+        mBtf.cleanUp();
     }
 
 

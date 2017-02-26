@@ -151,7 +151,7 @@ public class GuitarView extends View {
 
         if (mFretboard != null) {
             mFretboard.onDraw(canvas, getWidth(), getHeight());
-            return;
+            //return;
         }
 
         //if (height != getHeight()) {
@@ -332,7 +332,7 @@ public class GuitarView extends View {
         else {
             rootNote = key + mChannel.getOctave() * 12;
         }
-        Log.d("MGH root note in guitar view is", Integer.toString(mChannel.getOctave()));
+        Log.d("MGH guitarview rootnote", Integer.toString(mChannel.getOctave()));
         lowNote = mChannel.getLowNote();
         int highNote = mChannel.getHighNote();
         int[] allFrets = new int[highNote - lowNote + 1];

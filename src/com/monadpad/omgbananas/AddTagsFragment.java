@@ -63,7 +63,7 @@ public class AddTagsFragment extends OMGFragment {
             public void onClick(View view) {
                 mOMGHelper.updateTags(tagText.getText().toString());
 
-                getActivity().getSupportFragmentManager().popBackStack();
+                getActivity().getFragmentManager().popBackStack();
 
                 mOMGHelper.shareLastSaved();
             }
@@ -74,7 +74,7 @@ public class AddTagsFragment extends OMGFragment {
             public void onClick(View view) {
                 mOMGHelper.updateTags(tagText.getText().toString());
 
-                getActivity().getSupportFragmentManager().popBackStack();
+                getActivity().getFragmentManager().popBackStack();
             }
         });
 

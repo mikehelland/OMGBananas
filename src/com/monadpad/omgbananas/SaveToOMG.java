@@ -3,7 +3,7 @@ package com.monadpad.omgbananas;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.apache.http.HttpResponse;
+/*import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
@@ -12,6 +12,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+*/
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,7 +36,7 @@ public class SaveToOMG {
     }
 
     private long doHttp(String saveUrl, String type, String data) {
-        long id = -1;
+/*        long id = -1;
         HttpClient httpclientup = new DefaultHttpClient();
         Log.d("MGH doHttp", "1");
         try {
@@ -69,7 +70,8 @@ public class SaveToOMG {
 
         Log.d("MGH doHttp saved?", desc);
         return id;
-
+*/
+        return 0;
     }
 
     public void execute(String saveUrl, String type, String data, OMGCallback callback) {

@@ -75,12 +75,16 @@ public abstract class Channel {
         dsubbeats = (double)subbeats;
     }
 
-    public void playLiveNote(Note note) {
+    public int playLiveNote(Note note) {
+        return playLiveNote(note, false);
+    }
 
-        playNote(note);
+    public int playLiveNote(Note note, boolean multiTouch) {
+
+        int noteHandle = playNote(note, multiTouch);
 
         if (!mJam.isPlaying())
-            return;
+            return noteHandle;
 
         if (note.isRest()) {
             stopRecording();
@@ -91,21 +95,22 @@ public abstract class Channel {
             state = STATE_LIVEPLAY;
         }
 
+        return noteHandle;
     }
 
     public void playRecordedNote(Note note) {
         if (state == STATE_PLAYBACK) {
-            playNote(note);
+            playNote(note, false);
         }
     }
 
-    public void playNote(Note note) {
+    public int playNote(Note note, boolean multiTouch) {
 
         if (lastPlayedNote != null)
             lastPlayedNote.isPlaying(false);
 
         if (!enabled)
-            return;
+            return -1;
 
 
         playingNoteNumber = note.getScaledNote();
@@ -113,7 +118,7 @@ public abstract class Channel {
         note.isPlaying(true);
         lastPlayedNote = note;
 
-        if (playingId > -1) {
+        if (playingId > -1 && (note.isRest() || !multiTouch)) {
             mPool.pause(playingId);
             mPool.stop(playingId);
             playingId = -1;
@@ -121,14 +126,22 @@ public abstract class Channel {
 
         finishCurrentNoteAt(-1);
 
+        int noteHandle = -1;
         if (!note.isRest()) {
             int noteToPlay = note.getInstrumentNote();
-            Log.d("MGH noteToPlay", Integer.toString(noteToPlay));
+            //Log.d("MGH noteToPlay", Integer.toString(noteToPlay));
 
-            playingId = mPool.play(ids[noteToPlay], volume, volume, 10, 0, 1);
+            if (noteToPlay >= 0 && noteToPlay < ids.length) {
+                noteHandle = mPool.play(ids[noteToPlay], volume, volume, 10, 0, 1);
+                playingId = noteHandle;
+            }
 
         }
+        return noteHandle;
+    }
 
+    public void stopWithHandle(int handle) {
+        mPool.stop(handle);
     }
 
     public void toggleEnabled() {
@@ -220,6 +233,21 @@ public abstract class Channel {
         state = STATE_PLAYBACK;
     }
 
+    public int getInstrumentNoteNumber(int scaledNote) {
+        int noteToPlay = scaledNote + octave * 12;
+
+        while (noteToPlay < lowNote) {
+            noteToPlay += 12;
+        }
+        while (noteToPlay > highNote) {
+            noteToPlay -= 12;
+        }
+
+        noteToPlay -= lowNote;
+
+        return noteToPlay;
+    }
+
     public double getNextBeat() {
         return nextBeat;
     }
@@ -261,6 +289,8 @@ public abstract class Channel {
 
     public void startRecordingNote(Note note) {
 
+        Log.d("MGH recording", "start");
+
         if (recordingNote != null) {
             stopRecording();
         }
@@ -276,9 +306,12 @@ public abstract class Channel {
     }
 
     public void stopRecording() {
+        Log.d("MGH recording", "stop1");
 
         if (recordingNote == null)
             return;
+
+        Log.d("MGH recording", "stop2");
 
         DebugTouch debugTouch = new DebugTouch();
         debugTouch.mode = "STOP";
@@ -296,9 +329,21 @@ public abstract class Channel {
         double beats = (nowSubbeat - recordingStartedAtSubbeat) / dsubbeats;
         double startBeat = recordingStartedAtSubbeat / dsubbeats;
 
+        Log.d("MGH recordingnote", Integer.toString(recordingNote.getInstrumentNote()));
+
+
         recordingNote.setBeats(beats);
 
         mNoteList.overwrite(recordingNote, startBeat);
+
+        String mynotes = "";
+        for (Note debugNote : mNoteList) {
+            mynotes = mynotes + debugNote.getInstrumentNote();
+            if (debugNote.isRest())
+                mynotes = mynotes + "R";
+            mynotes = mynotes + "=" + debugNote.getBeats() + ":";
+        }
+        Log.d("MGH notelist", mynotes);
 
         recordingNote = null;
         recordingStartedAtSubbeat = -1;

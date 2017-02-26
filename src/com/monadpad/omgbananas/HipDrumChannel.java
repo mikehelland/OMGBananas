@@ -24,6 +24,7 @@ public class HipDrumChannel extends DrumChannel {
         rids[i++] = R.raw.hh_tom_l;
 
 
+
         presetNames = new String[] {
                 "PRESET_HH_KICK",
                 "PRESET_HH_CLAP",

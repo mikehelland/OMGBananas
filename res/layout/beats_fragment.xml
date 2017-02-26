@@ -36,7 +36,8 @@
               android:padding="8dip"
             />
 
-    <SeekBar android:layout_width="fill_parent"
+    <SeekBar
+            android:layout_width="fill_parent"
              android:layout_height="wrap_content"
              android:id="@+id/bpm_seekbar"
              android:layout_below="@id/bpm_caption"/>

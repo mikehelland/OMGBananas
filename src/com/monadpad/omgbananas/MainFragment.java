@@ -2,8 +2,8 @@ package com.monadpad.omgbananas;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -471,10 +471,14 @@ public class MainFragment extends OMGFragment {
 
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_in_right,
-                R.anim.slide_out_left,
-                R.anim.slide_in_left,
-                R.anim.slide_out_right
+        ft.setCustomAnimations(R.animator.slide_in_right,
+                R.animator.slide_out_left,
+                R.animator.slide_in_left,
+                R.animator.slide_out_right
+                //R.anim.slide_in_right,
+                //R.anim.slide_out_left,
+                //R.anim.slide_in_left,
+                //R.anim.slide_out_right
         );
         //ft.remove(MainFragment.this);
         ft.replace(R.id.main_layout, f);
@@ -488,10 +492,14 @@ public class MainFragment extends OMGFragment {
 
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_in_up,
-                R.anim.slide_out_up,
-                R.anim.slide_in_down,
-                R.anim.slide_out_down
+        ft.setCustomAnimations(R.animator.slide_in_left,
+                R.animator.slide_out_right,
+                R.animator.slide_in_right,
+                R.animator.slide_out_left
+                //R.anim.slide_in_up,
+                //R.anim.slide_out_up,
+                //R.anim.slide_in_down,
+                //R.anim.slide_out_down
         );
         //ft.remove(MainFragment.this);
         ft.replace(R.id.main_layout, f);
@@ -505,10 +513,14 @@ public class MainFragment extends OMGFragment {
 
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_in_down,
-                R.anim.slide_out_down,
-                R.anim.slide_in_up,
-                R.anim.slide_out_up
+        ft.setCustomAnimations(R.animator.slide_in_left,
+                R.animator.slide_out_right,
+                R.animator.slide_in_right,
+                R.animator.slide_out_left
+                //R.anim.slide_in_down,
+                //R.anim.slide_out_down,
+                //R.anim.slide_in_up,
+                //R.anim.slide_out_up
         );
         //ft.remove(MainFragment.this);
         ft.replace(R.id.main_layout, f);

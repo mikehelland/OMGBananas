@@ -2,8 +2,8 @@ package com.monadpad.omgbananas;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -228,10 +228,10 @@ public class WelcomeFragment extends OMGFragment {
 
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_in_right,
-                R.anim.slide_out_left,
-                R.anim.slide_in_left,
-                R.anim.slide_out_right
+        ft.setCustomAnimations(R.animator.slide_in_right,
+                R.animator.slide_out_left,
+                R.animator.slide_in_left,
+                R.animator.slide_out_right
         );
         ft.replace(R.id.main_layout, f);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

@@ -271,6 +271,10 @@ public class Jam {
 
     }
 
+    public int getSubbeatLength() {
+        return subbeatLength;
+    }
+
 
     class PlaybackThread extends Thread {
 

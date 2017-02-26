@@ -1,8 +1,8 @@
 package com.monadpad.omgbananas;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +86,7 @@ public class MixerFragment extends OMGFragment {
 
     }
 
-    public void showFragmentRight(Fragment f) {
+    /*public void showFragmentRight(Fragment f) {
 
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -136,6 +136,7 @@ public class MixerFragment extends OMGFragment {
         ft.commit();
 
     }
+    */
 
 
 }

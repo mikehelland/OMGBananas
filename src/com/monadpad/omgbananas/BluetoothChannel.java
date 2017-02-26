@@ -25,11 +25,12 @@ public class BluetoothChannel extends Channel {
     }
 
     @Override
-    public void playNote(Note note) {
+    public int playNote(Note note, boolean multiTouch) {
         int instrumentNumber = note.isRest() ? -1 : note.getInstrumentNote();
         int basicNote = note.isRest() ? -1 : note.getBasicNote();
 
         mConnection.writeString("CHANNEL_PLAY_NOTE=" + basicNote + "," + instrumentNumber + ";");
+        return 0;
     }
 
     public void setLowHigh(int low, int high, int octave) {

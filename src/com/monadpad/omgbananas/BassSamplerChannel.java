@@ -16,6 +16,8 @@ public class BassSamplerChannel extends Channel {
         highNote = 48;
         lowNote = 28;
 
+        octave = 2;
+
         volume = 0.8f;
         rids = new int[21];
 

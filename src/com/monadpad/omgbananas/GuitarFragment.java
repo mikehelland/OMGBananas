@@ -27,6 +27,7 @@ public class GuitarFragment extends OMGFragment {
         if (mJam != null)
             getPreferredFretboard();
 
+
         return view;
     }
 

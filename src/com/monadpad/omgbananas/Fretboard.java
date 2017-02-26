@@ -121,7 +121,7 @@ public class Fretboard {
 
         }
         catch (JSONException exp) {
-            Log.d("MGH Parse Fretboard JSON failed", exp.getMessage());
+            Log.d("MGH Fretboard bad json", exp.getMessage());
             exp.printStackTrace();
             return false;
         }
@@ -130,11 +130,11 @@ public class Fretboard {
             for (FretMapElement mapElement : mapColumn) {
 
                 mapElement.scaledNote = mJam.getScaledNoteNumber(mapElement.basicNote);
-                mapElement.instrumentNote = mapElement.scaledNote +
-                        12 * mChannel.getOctave() - mChannel.getLowNote();
+                mapElement.instrumentNote = mChannel.getInstrumentNoteNumber(mapElement.scaledNote);
 
                 Log.d("MGH mapped basic note", Integer.toString(mapElement.basicNote));
                 Log.d("MGH mapped scaled note", Integer.toString(mapElement.scaledNote));
+                Log.d("MGH mapped inst note", Integer.toString(mapElement.instrumentNote));
             }
         }
 
@@ -159,6 +159,8 @@ public class Fretboard {
                 touch.onFret = (int) (touch.y / fretHeight);
                 touch.onString = (int) (touch.x / stringWidth);
                 touches.add(touch);
+                Log.d("MGH touchfret", Integer.toString(touch.onFret));
+                Log.d("MGH touchstring", Integer.toString(touch.onString));
 
                 //touch.channelId = mChannel.startChannel(base + touch.fretMapping(fretMap));
 
@@ -170,7 +172,7 @@ public class Fretboard {
                 playNote.setInstrumentNote(fret.instrumentNote);
 
 
-                mChannel.playLiveNote(playNote);
+                touch.playingHandle = mChannel.playLiveNote(playNote, true);
 
                 break;
             }
@@ -178,9 +180,15 @@ public class Fretboard {
             case MotionEvent.ACTION_UP: {
 
                 if (isTouching) {
+                    mChannel.stopWithHandle(touches.get(0).playingHandle);
                     //channel.stopChannel(touches.get(0).channelId);
                     touches.clear();
                     isTouching = false;
+
+                    Note restNote = new Note();
+                    restNote.setRest(true);
+                    mChannel.playLiveNote(restNote, true);
+
                 }
 
                 break;
@@ -205,7 +213,7 @@ public class Fretboard {
                 playNote.setInstrumentNote(fret.instrumentNote);
 
 
-                mChannel.playLiveNote(playNote);
+                touch.playingHandle = mChannel.playLiveNote(playNote, true);
 
                 break;
             }
@@ -219,11 +227,19 @@ public class Fretboard {
                     if (id == touch.id) {
                         touches.remove(touch);
 
-                        //channel.stopChannel(touch.channelId);
+                        mChannel.stopWithHandle(touch.playingHandle);
 
                         break;
                     }
                 }
+
+                //I don't think this would run, since it would action_up, but hey
+                if (touches.size() == 0) {
+                    Note restNote = new Note();
+                    restNote.setRest(true);
+                    mChannel.playLiveNote(restNote, true);
+                }
+
 
                 break;
             }
@@ -257,7 +273,9 @@ public class Fretboard {
                                 playNote.setBasicNote(fret.basicNote);
                                 playNote.setScaledNote(fret.scaledNote);
                                 playNote.setInstrumentNote(fret.instrumentNote);
-                                mChannel.playLiveNote(playNote);
+
+                                mChannel.stopWithHandle(touch.playingHandle);
+                                touch.playingHandle = mChannel.playLiveNote(playNote, true);
 
                                 //channel.setChannel(touch.channelId,
                                 //        base + touch.fretMapping(fretMap));

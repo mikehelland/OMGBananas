@@ -30,7 +30,7 @@ public class BeatsFragment extends OMGFragment {
         mView = view;
         bpmText = (TextView)view.findViewById(R.id.bpm_caption);
         bpmSeekBar = (SeekBar)view.findViewById(R.id.bpm_seekbar);
-        bpmSeekBar.setMax(140);
+        bpmSeekBar.setMax(200);
 
         if (mJam != null)
             setup();
@@ -50,13 +50,13 @@ public class BeatsFragment extends OMGFragment {
 
         int bpm = mJam.getBPM();
         bpmText.setText(Integer.toString(bpm) + " bpm");
-        bpmSeekBar.setProgress(bpm - 60);
+        bpmSeekBar.setProgress(bpm - 20);
 
         bpmSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if (b) {
-                    int newbpm = 60 + i;
+                    int newbpm = 20 + i;
                     bpmText.setText(Integer.toString(newbpm) + " bpm");
                     mJam.setBPM(newbpm);
                 }

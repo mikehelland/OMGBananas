@@ -17,8 +17,9 @@ public class BluetoothConnection extends Thread {
     private BluetoothConnectCallback mConnectedCallback;
     private BluetoothDataCallback mDataCallback;
 
+    private boolean disconnected = false;
 
-    private final static String TAG = "MGH bluetooth connection";
+    private final static String TAG = "MGH bluetoothconnection";
     
     public BluetoothConnection(BluetoothDevice device, BluetoothFactory bluetoothFactory,
                                BluetoothSocket socket, BluetoothConnectCallback callback){
@@ -75,16 +76,20 @@ public class BluetoothConnection extends Thread {
 
                 final String data = new String(buffer).substring(0, bytes);
 
-                //Log.d("MGH", data);
-
                 if (mDataCallback != null)
                     bluetoothFactory.newData(mDataCallback, data);
             }
 
         }
-//            if (!cleaningUp) {
-//                resetConnections();
-//            }
+
+        disconnected = true;
+        if (!bluetoothFactory.cleaningUp) {
+            resetConnections();
+        }
+    }
+
+    public boolean isDisconnected() {
+        return disconnected;
     }
 
     public void write(byte[] bytes){

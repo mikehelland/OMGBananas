@@ -89,14 +89,14 @@ public class DialpadChannel extends Channel {
     }
 
     @Override
-    public void playNote(Note note) {
+    public int playNote(Note note, boolean multiTouch) {
         //super.playNote(note);
 
         if (lastPlayedNote != null)
             lastPlayedNote.isPlaying(false);
 
         if (!enabled)
-            return;
+            return -1;
 
         if (note.isRest()) {
             mute();
@@ -113,7 +113,7 @@ public class DialpadChannel extends Channel {
             note.isPlaying(true);
             lastPlayedNote = note;
         }
-
+        return 1;
     }
 
 

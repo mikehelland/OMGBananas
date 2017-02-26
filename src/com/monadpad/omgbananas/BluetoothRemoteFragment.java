@@ -2,8 +2,8 @@ package com.monadpad.omgbananas;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,10 +100,15 @@ public class BluetoothRemoteFragment extends OMGFragment {
 
     private void showFragment(Fragment f) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_in_up,
-                R.anim.slide_out_up,
-                R.anim.slide_in_down,
-                R.anim.slide_out_down
+        ft.setCustomAnimations(R.animator.slide_in_left,
+                R.animator.slide_out_right,
+                R.animator.slide_in_right,
+                R.animator.slide_out_left
+
+                //R.anim.slide_in_up,
+               // R.anim.slide_out_up,
+                //R.anim.slide_in_down,
+                //R.anim.slide_out_down
         );
         ft.replace(R.id.main_layout, f);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -122,7 +127,7 @@ public class BluetoothRemoteFragment extends OMGFragment {
         else if ("LAUNCH_DRUMPAD".equals(name)) {;
             boolean[][] pattern;
             try {
-                Log.d("MGH process launch drumpad", value.substring(value.length() - 20));
+                Log.d("MGH launch drumpad", value.substring(value.length() - 20));
                 JSONArray jsonPattern = new JSONArray(value);
                 JSONArray jsonTrackPattern;
                 pattern = new boolean[jsonPattern.length()][];
@@ -139,7 +144,7 @@ public class BluetoothRemoteFragment extends OMGFragment {
             }
             catch (JSONException ex) {
 
-                Log.d("MGH process command launch drumpad", "json exception");
+                Log.d("MGH launch drumpad", "json exception");
 
             }
 

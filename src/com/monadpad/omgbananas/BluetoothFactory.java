@@ -189,6 +189,13 @@ public class BluetoothFactory {
 
     public void connectToPairedDevices(final BluetoothConnectCallback callback) {
 
+        ArrayList<BluetoothConnection> toRemove = new ArrayList<>();
+        for (BluetoothConnection connection : connectionThreads) {
+            if (connection.isDisconnected()) {
+                toRemove.add(connection);
+            }
+        }
+        connectionThreads.removeAll(toRemove);
 
         boolean isConnected;
         paired = mBluetooth.getBondedDevices();
@@ -323,10 +330,10 @@ public class BluetoothFactory {
     }
 
     void newData(BluetoothDataCallback callback, String newData) {
-        //Log.d("MGH newData", newString);
 
         // if this doesn't end with semicolon, save it for when it does
         // total nasty hack for now
+
         if (!newData.substring(newData.length() - 1).equals(";")) {
             partialTransmission = partialTransmission + newData;
             return;
